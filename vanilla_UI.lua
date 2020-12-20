@@ -8,7 +8,8 @@ UI.style = {
     logColor = "5",
     Background = {r = 0, g = 0, b = 0, a = 175},
     Background_Border = {r = 255, g = 0, b = 95, a = 255},
-    Text = {r = 255, g = 255, b = 255, a = 255},
+    Checkbox_Text = {r = 255, g = 255, b = 255, a = 255},
+    Button_Text = {r = 20, g = 20, b = 20, a = 255},
     Item_Background = {r = 255, g = 255, b = 255, a = 200},
     Item_Hovered = {r = 0, g = 0, b = 0, a = 75},
     Item_Hold = {r = 255, g = 255, b = 255, a = 100},
@@ -145,18 +146,28 @@ function UI.Begin(name, flags)
     UI.DisableActions()
 end
 
+-- Runs the end function for the menu.
 function UI.End()
     Renderer.DrawCursor()
     GUI.item = {x = 0, y = 0, w = 0, h = 0, name = ""}
     GUI.prev_item = {x = 0, y = 0, w = 0, h = 0, name = ""}
 end
 
+-- Sets the next item in the UI to be on the same line as the previous item.
 function UI.SameLine()
     GUI.vars.sameline = true
 end
 
-function UI.SameLine()
-    GUI.vars.sameline = true
+-- Sets the menu key (prefered to not run in a loop)
+function UI.SetMenuKey(key)
+    GUI.vars.menuKey = key
+end
+
+-- Checks for menu key pressed
+function UI.CheckOpen()
+    if UI.natives.IsDisabledControlJustPressed(0, GUI.vars.menuKey) then
+        GUI.active = not GUI.active
+    end
 end
 
 -- displayName : String (Name of the checkbox)
@@ -167,6 +178,7 @@ function UI.Checkbox(displayName, configName, clickFunc)
         GUI.config[configName] = false
         log(false, "Creating config variable for: " .. configName)
     end
+    local hoveredItem = "h"..configName
     GUI.cursor.x, GUI.cursor.y = UI.natives.GetNuiCursorPosition()
     GUI.prev_item = GUI.item
     if not GUI.vars.sameline then
@@ -180,7 +192,7 @@ function UI.Checkbox(displayName, configName, clickFunc)
         GUI.vars.sameline = false
     end
     GUI.item.w = Renderer.GetTextWidth(displayName, 4, 0.3)+GUI.item.w
-    Renderer.DrawText(GUI.item.x+22, GUI.item.y-2, UI.style.Text.r, UI.style.Text.g, UI.style.Text.b, UI.style.Text.a, tostring(displayName), 4, false, 0.30)
+    Renderer.DrawText(GUI.item.x+22, GUI.item.y-2, UI.style.Checkbox_Text.r, UI.style.Checkbox_Text.g, UI.style.Checkbox_Text.b, UI.style.Checkbox_Text.a, tostring(displayName), 4, false, 0.30)
     Renderer.DrawRect(GUI.item.x, GUI.item.y, 20, 20, UI.style.Item_Background.r, UI.style.Item_Background.g, UI.style.Item_Background.b, UI.style.Item_Background.a)
     if GUI.config[configName] == true then
         Renderer.DrawRect(GUI.item.x+1, GUI.item.y+1, 18, 18, UI.style.Item_Toggled.r, UI.style.Item_Toggled.g, UI.style.Item_Toggled.b, UI.style.Item_Toggled.a)
@@ -213,6 +225,7 @@ function UI.Button(displayName, size, clickFunc)
         GUI.vars.sameline = false
     end
     Renderer.DrawRect(GUI.item.x, GUI.item.y, GUI.item.w, GUI.item.h, UI.style.Item_Background.r, UI.style.Item_Background.g, UI.style.Item_Background.b, UI.style.Item_Background.a)
+    Renderer.DrawText(GUI.item.x+(GUI.item.w/2), GUI.item.y-2, UI.style.Button_Text.r, UI.style.Button_Text.g, UI.style.Button_Text.b, UI.style.Button_Text.a, tostring(displayName), 4, true, 0.30)
     if Renderer.mouseInBounds(GUI.item.x, GUI.item.y, GUI.item.w, GUI.item.h) then
         Renderer.DrawRect(GUI.item.x, GUI.item.y, GUI.item.w, GUI.item.h, UI.style.Item_Hovered.r, UI.style.Item_Hovered.g, UI.style.Item_Hovered.b, UI.style.Item_Hovered.a)
         if UI.natives.IsDisabledControlJustReleased(0, 24) then
@@ -226,26 +239,33 @@ function UI.Button(displayName, size, clickFunc)
     end
 end
 
-local function buttonDemonstration() log(false, "TEST") end
+local function buttonDemonstration() 
+    log(false, "TEST")
+end
+
+UI.SetMenuKey(121)
 
 Citizen.CreateThread(function()
     while UI.error == false do
         Wait(0)
-        UI.Begin("Vanilla UI Demo", {NoBorder = false, NoDragging = false})
-        UI.Checkbox("T", "cTest", function() 
-            print("test") 
-        end)
-        UI.SameLine()
-        UI.Checkbox("Tes", "cTestf")
-        UI.SameLine()
-        UI.Checkbox("Test Checkbo", "cTestb")
-        UI.Checkbox("Test Check", "cTeste")
-        UI.Checkbox("Test C", "cTesth")
-        UI.SameLine()
-        UI.Button("Test Button", Vec2(100, 20), function() 
-            log(false, "BUTTON1 PRESSED") 
-        end)
-        UI.Button("Test Button", Vec2(100, 20), buttonDemonstration)
-        UI.End()
+        UI.CheckOpen()
+        if GUI.active then
+            UI.Begin("Vanilla UI Demo", {NoBorder = false, NoDragging = false})
+            UI.Checkbox("e", "cTest", function() 
+                print("test") 
+            end)
+            UI.SameLine()
+            UI.Checkbox("Tes", "cTestf")
+            UI.SameLine()
+            UI.Checkbox("Test Checkbo", "cTestb")
+            UI.Checkbox("Test Check", "cTeste")
+            UI.Checkbox("Test C", "cTesth")
+            UI.SameLine()
+            UI.Button("Test Button", Vec2(100, 20), function() 
+                log(false, "BUTTON1 PRESSED") 
+            end)
+            UI.Button("Test Button", Vec2(100, 20), buttonDemonstration)
+            UI.End()
+        end
     end
 end)
