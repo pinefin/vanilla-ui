@@ -5,16 +5,16 @@ I made this UI to give people an open sourced click gui for mod menus
 
 At the moment this only supports one window.
 
-###Planed Updates
+### Planed Updates
 ------------
 - Dragging. (Next update SOON&trade;)
 - Multiple window support.
 - Sliders
 - Textbox
 
-###Documentation
+### Documentation
 ------------
-####UI.Begin
+#### UI.Begin
 ```lua
 function UI.Begin(name, flags)
 
@@ -22,7 +22,7 @@ function UI.Begin(name, flags)
 UI.Begin("Vanilla UI Demo", {NoBorder = true})
 ```
 
-####UI.Begin
+#### UI.Begin
 ```lua
 function UI.Begin(name, flags)
 
@@ -30,7 +30,7 @@ function UI.Begin(name, flags)
 UI.Begin("Vanilla UI Demo", {NoBorder = true})
 ```
 
-####UI.End
+#### UI.End
 Runs the end function for the menu.
 ```lua
 function UI.End()
@@ -39,7 +39,7 @@ function UI.End()
 UI.End() --PLACE THIS AT THE END OF THE GUI
 ```
 
-####UI.Checkbox
+#### UI.Checkbox
 ```lua
 UI.Checkbox(displayName, configName, clickFunc)
 
@@ -47,7 +47,7 @@ UI.Checkbox(displayName, configName, clickFunc)
 UI.Checkbox("Test Checkbox", "cTestCheckbox", function() log(false, "Checkbox Toggled") end)
 ```
 
-####UI.Button
+#### UI.Button
 ```lua
 UI.Button(displayName, size, clickFunc)
 
@@ -55,7 +55,7 @@ UI.Button(displayName, size, clickFunc)
 UI.Button("Test Button", Vec2(100, 20), function() log(false, "Button Pressed") end)
 ```
 
-####UI.SameLine
+#### UI.SameLine
 Sets the next item in the UI to be on the same line as the previous item.
 ```lua
 function UI.SameLine()
@@ -66,7 +66,7 @@ UI.SameLine()
 UI.Button("Test Button", Vec2(100, 20), function() log(false, "Button Pressed") end)
 ```
 
-####UI.PushNextWindowSize
+#### UI.PushNextWindowSize
 Set the next window size
 ```lua
 UI.PushNextWindowSize(w, h)
@@ -75,7 +75,7 @@ UI.PushNextWindowSize(w, h)
 UI.PushNextWindowSize(600, 500)
 ```
 
-####UI.SetMenuKey
+#### UI.SetMenuKey
 Sets the menu key (prefered to not run in a loop)
 ```lua
 UI.SetMenuKey(key)
