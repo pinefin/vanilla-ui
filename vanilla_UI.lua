@@ -234,33 +234,3 @@ function UI.Button(displayName, size, clickFunc)
         end
     end
 end
-
-local function buttonDemonstration() 
-    log(false, "TEST")
-end
-
-UI.SetMenuKey(121)
-
-Citizen.CreateThread(function()
-    while UI.error == false do
-        Wait(0)
-        UI.CheckOpen()
-        if GUI.active then
-            UI.Begin("Vanilla UI Demo", {NoBorder = false, NoDragging = false})
-            UI.Checkbox("e", "cTest", function() 
-                print("test") 
-            end)
-            UI.SameLine()
-            UI.Checkbox("Tes", "cTestf")
-            UI.SameLine()
-            UI.Checkbox("Test Checkbo", "cTestb")
-            UI.Checkbox("Test Check", "cTeste")
-            UI.SameLine()
-            UI.Button("Test Button", Vec2(100, 20), function() 
-                log(false, "BUTTON1 PRESSED") 
-            end)
-            UI.Button("Test Button", Vec2(100, 20), buttonDemonstration)
-            UI.End()
-        end
-    end
-end)
