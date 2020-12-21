@@ -5,9 +5,10 @@ I made this UI to give people an open sourced click gui for mod menus
 
 At the moment this only supports one window.
 
-### Planed Updates
+### Planned Updates
 ------------
 - Dragging. (Next update SOON&trade;)
+- Scrolling
 - Multiple window support.
 - Sliders
 - Textbox
